@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="./deepstream.js"></script>
+</head>
+
+<body>
+<button id="btn1">Subscribe</button>
+</body>
+
+<script type="text/javascript">
+
+    var record;
+
+    var client = deepstream('127.0.0.1:6020').login({
+        username: 'hex',
+        password: '123456',
+    }, function(success, data) {
+            if(success) {
+                console.log('Login successful!\n');
+                record = client.record.getRecord('data/health');
+//                record.subscribe('heart', function(data) {
+//                    console.log(data);
+//                })
+            }
+        });
+
+    var btn1 = document.getElementById('btn1');
+    btn1.onclick = function () {
+        var r = record.get('heart');
+        console.log(r);
+    }
+
+</script>
+</html>
