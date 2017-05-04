@@ -10,13 +10,17 @@
 
 <body>
 <button id="btn1">Subscribe</button>
+<button id="btn2">Subscribe</button>
 </body>
 
 <script type="text/javascript">
 
     var record;
 
-    var client = deepstream('127.0.0.1:6020').login({
+    var server = '192.168.31.109:6020';
+    //    var server = '127.0.0.1:6020';
+
+    var client = deepstream(server).login({
         username: 'hex',
         password: '123456',
     }, function(success, data) {
@@ -31,6 +35,12 @@
 
     var btn1 = document.getElementById('btn1');
     btn1.onclick = function () {
+        var r = record.get('heart');
+        console.log(r);
+    }
+
+    var btn2 = document.getElementById('btn1');
+    btn2.onclick = function () {
         var r = record.get('heart');
         console.log(r);
     }

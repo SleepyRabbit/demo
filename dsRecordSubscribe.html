@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="./deepstream.js"></script>
+</head>
+
+<body>
+<button id="btn1">Subscribe</button>
+<button id="btn2">unSubscribe</button>
+<button id="btn3">get</button>
+<input id="input1"></input>
+</body>
+
+<script type="text/javascript">
+
+    var server = '192.168.31.109:6020';
+//    var server = '127.0.0.1:6020';
+    var record = null;
+
+    var loginstate = false;
+
+    var client = deepstream(server).login({
+        username: 'hex',
+        password: '123456',
+    }, function(success, data) {
+            if(success) {
+                console.log('Login successful!\n');
+                loginstate = true;
+            }
+        });
+
+    var btn1 = document.getElementById('btn1');
+    btn1.onclick = function () {
+        if(loginstate) {
+            record = client.record.getRecord('book/english');
+            record.whenReady(function () {
+                btn2.disabled = false;
+                btn3.disabled = false;
+                var msg = record.get('heart');
+                console.log(msg);
+            });
+        }
+    };
+
+    var btn2 = document.getElementById('btn2');
+    btn2.disabled = true;
+
+    btn2.onclick = function () {
+//        client.record.getRecord('data/health').unsubscribe();
+//        record.unsubscribe();
+//        record.discard();
+        record.delete();
+        btn2.disabled = true;
+        btn3.disabled = true;
+        console.log('unsubscribe!');
+    }
+
+    var btn3 = document.getElementById('btn3');
+    btn3.disabled = true;
+    btn3.onclick = function () {
+        var msg = record.get('heart');
+        console.log(msg);
+    }
+
+</script>
+</html>

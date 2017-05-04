@@ -16,7 +16,8 @@
 <script type="text/javascript">
 
     var server = '192.168.31.109:6020';
-    //    var server = '127.0.0.1:6020';
+//    var server = '127.0.0.1:6020';
+    var record = null;
 
     var client = deepstream(server).login({
         username: 'hex',
@@ -24,13 +25,19 @@
     }, function(success, data) {
             if(success) {
                 console.log('Login successful!\n');
+                client.record.listen('book/.*', (match, isSubscribe, response) => {
+                    console.log(match);
+                    console.log(isSubscribe);
+                    record = client.record.getRecord('book/english');
+//                    var record = client.record.getRecord('data/healthy');
+//                    record.set('heart', document.getElementById('input1').value);
+//                   response.accept();
+                });
             }
         });
 
     var btn1 = document.getElementById('btn1');
     btn1.onclick = function () {
-        var record = client.record.getRecord('data/health');
-        console.log(record);
         record.set('heart', document.getElementById('input1').value);
     };
 
