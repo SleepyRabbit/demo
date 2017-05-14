@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./deepstream.js"></script>
+</head>
+<body>
+    <button id="btn1">Subscribe</button>
+    <button id="btn2">unSubscribe</button>
+</body>
+
+<script>
+const server = '127.0.0.1:6020';
+const user = {
+    username: 'subscriber',
+    password: '123456',
+}
+
+const client = deepstream(server).login(
+user,
+function(success, data) {
+    if(success) {
+        console.log('Login successful!');
+    }
+    else {
+        console.log('Login failed!');
+        console.log()
+    }
+} );
+
+const btn1 = document.getElementById('btn1');
+btn1.onclick = function () {
+    console.log('subscribe');
+    client.event.subscribe('news/sports',
+    function (data) {
+        console.log(data);
+    })
+}
+
+const btn2 = document.getElementById('btn2');
+btn2.onclick = function () {
+    console.log('unsubscribe');
+    client.event.unsubscribe('news/sports');
+}
+
+</script>
+</html>
