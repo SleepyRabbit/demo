@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="./deepstream.js"></script>
+</head>
+
+<body>
+<button id="btn1">Subscribe</button>
+<input id="input1"></input>
+</body>
+
+<script type="text/javascript">
+
+    var server = '192.168.31.109:6020';
+//    var server = '127.0.0.1:6020';
+    var record = null;
+
+    var client = deepstream(server).login({
+        username: 'hex',
+        password: '123456',
+    }, function(success, data) {
+            if(success) {
+                console.log('Login successful!\n');
+            }
+        });
+
+    var btn1 = document.getElementById('btn1');
+    btn1.onclick = function () {
+        record = client.record.getList('todos');
+
+        record.whenReady( (list) => {
+            list.setEntries([ 'car/1', 'car/2' ]);
+        });
+    };
+
+</script>
+</html>
