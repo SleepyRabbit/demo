@@ -15,8 +15,8 @@
 
 <script type="text/javascript">
 
-    var server = '192.168.31.109:6020';
-//    var server = '127.0.0.1:6020';
+//    var server = '192.168.31.109:6020';
+    var server = '127.0.0.1:6020';
     var record = null;
 
     var client = deepstream(server).login({
@@ -30,12 +30,17 @@
 
     var btn1 = document.getElementById('btn1');
     btn1.onclick = function () {
-        record = client.record.getList('todos');
+        record = client.record.getList('ulogic_claw');
 
         record.whenReady( (list) => {
-            list.setEntries([ 'car/1', 'car/2' ]);
+//            list.setEntries([ '9527', '9528' ]);
+
+            console.log(input1.value);
+            list.addEntry(input1.value);
         });
     };
+
+    var input = document.getElementById('input1');
 
 </script>
 </html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./deepstream.js"></script>
+</head>
+<body>
+    <button id="btn1">Emitter</button>
+    <button id="btn2">Stop</button>
+    <input id="input1"></input>
+</body>
+
+<script>
+const server = '127.0.0.1:6020';
+const user = {
+    username: 'emitter',
+    password: '123456',
+}
+
+var timer1 = null;
+
+const client = deepstream(server).login(
+user,
+function(success, data) {
+    if(success) {
+        console.log('Login successful!');
+    }
+    else {
+        console.log('Login failed!');
+        console.log(data);
+    }
+} );
+
+client.event.listen('news/*',
+    function (eventName, isSubscribed, response) {
+    console.log(eventName);
+    if(isSubscribed) {
+        console.log('isSubscribed!');
+    }
+    else {
+        console.log('unSubscribed!');
+        clearInterval(timer1);
+    }
+});
+
+const input1 = document.getElementById('input1');
+
+const btn1 = document.getElementById('btn1');
+btn1.onclick = function() {
+    var data = {
+        sceneDID: Number,
+        state: "idle",
+    }
+    data.sceneDID = parseInt(input1.value);
+    client.event.emit("evt/scene/claw.single", data);
+    console.log('emit!');
+};
+
+const btn2 = document.getElementById('btn2');
+btn2.onclick = function() {
+    clearInterval(timer1);
+}
+
+
+
+</script>
+</html>

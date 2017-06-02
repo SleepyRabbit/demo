@@ -15,9 +15,11 @@
 
 <script type="text/javascript">
 
-    var server = '192.168.31.109:6020';
-//    var server = '127.0.0.1:6020';
+//    var server = '192.168.31.109:6020';
+    var server = '127.0.0.1:6020';
     var record = null;
+
+    var a = [];
 
     var client = deepstream(server).login({
         username: 'hex',
@@ -26,7 +28,7 @@
             if(success) {
                 console.log('Login successful!\n');
 
-                record = client.record.getList('todos');
+                record = client.record.getList('ulogic_claw');
 
                 record.whenReady( (list) => {
                    if( list.isEmpty() ) {
@@ -34,7 +36,11 @@
                    }
                    else {
                        var entries = list.getEntries();
-                       console.log(entries);
+//                       console.log(entries);
+                       entries.forEach( (entry, index) => {
+                            a[index] = parseInt(entry);
+                            console.log(a);
+                       } )
                    }
                 });
 
